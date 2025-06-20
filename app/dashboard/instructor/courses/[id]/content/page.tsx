@@ -35,6 +35,10 @@ import {
   Target,
   Users,
   Layers,
+  Eye,
+  History,
+  Command,
+  Sparkles,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -495,6 +499,10 @@ const LessonEditor = dynamic(() => import("@/components/instructor/course-editor
 const LiveSessionScheduler = dynamic(() => import("@/components/instructor/course-editor/LiveSessionScheduler"), { ssr: false });
 const WeeklyGoalEditor = dynamic(() => import("@/components/instructor/course-editor/WeeklyGoalEditor"), { ssr: false });
 const DripContentManager = dynamic(() => import("@/components/instructor/course-editor/DripContentManager"), { ssr: false });
+const AIAssistant = dynamic(() => import("@/components/instructor/course-editor/AIAssistant"), { ssr: false });
+const VersionHistory = dynamic(() => import("@/components/instructor/course-editor/VersionHistory"), { ssr: false });
+const CommandPalette = dynamic(() => import("@/components/instructor/course-editor/CommandPalette"), { ssr: false });
+const CoursePreview = dynamic(() => import("@/components/instructor/course-editor/CoursePreview"), { ssr: false });
 
 const levelOptions = [
   { value: "beginner", label: "🌱 Beginner" },
@@ -515,11 +523,70 @@ export default function CourseContentPage() {
   const [activeView, setActiveView] = useState<'structure' | 'live-sessions' | 'drip-content'>('structure');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  
+  // AI and Advanced Features State
+  const [selectedText, setSelectedText] = useState<string>('');
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [showCoursePreview, setShowCoursePreview] = useState(false);
+  const [previewMode, setPreviewMode] = useState<'student' | 'week-1' | 'week-2' | 'week-3' | 'instructor'>('student');
 
   // Dnd-kit hooks - MUST be called at the top level of the component
   const pointerSensor = useSensor(PointerSensor);
   const keyboardSensor = useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates });
   const sensors = useSensors(pointerSensor, keyboardSensor);
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Command Palette (⌘K or Ctrl+K)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setShowCommandPalette(true);
+      }
+      
+      // Save (⌘S or Ctrl+S)
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        handleSaveChanges();
+      }
+      
+      // Preview (⌘P or Ctrl+P)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'p') {
+        e.preventDefault();
+        setShowCoursePreview(true);
+      }
+      
+      // Version History (⌘H or Ctrl+H)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'h') {
+        e.preventDefault();
+        if (selectedLesson) {
+          setShowVersionHistory(true);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedLesson]);
+
+  // Track text selection for AI assistant
+  useEffect(() => {
+    const handleTextSelection = () => {
+      const selection = window.getSelection();
+      if (selection && selection.toString().trim()) {
+        setSelectedText(selection.toString().trim());
+      }
+    };
+
+    document.addEventListener('mouseup', handleTextSelection);
+    document.addEventListener('keyup', handleTextSelection);
+    
+    return () => {
+      document.removeEventListener('mouseup', handleTextSelection);
+      document.removeEventListener('keyup', handleTextSelection);
+    };
+  }, []);
 
   useEffect(() => {
     if (!courseId) return;
@@ -790,6 +857,70 @@ export default function CourseContentPage() {
     }
   };
 
+  // AI Assistant Handlers
+  const handleAIContentGenerated = (content: any) => {
+    if (selectedLesson) {
+      const updatedLesson = { ...selectedLesson.lesson, content };
+      setCourseData(prev =>
+        prev
+          ? {
+              ...prev,
+              modules: prev.modules.map(m =>
+                m.id === selectedLesson.moduleId
+                  ? { ...m, lessons: m.lessons.map(l => l.id === updatedLesson.id ? updatedLesson : l) }
+                  : m
+              ),
+            }
+          : prev
+      );
+      setSelectedLesson({ moduleId: selectedLesson.moduleId, lesson: updatedLesson });
+    }
+  };
+
+  const handleAIQuizGenerated = (quiz: any) => {
+    if (selectedLesson) {
+      const updatedLesson = { ...selectedLesson.lesson, content: quiz, type: 'quiz' as const };
+      setCourseData(prev =>
+        prev
+          ? {
+              ...prev,
+              modules: prev.modules.map(m =>
+                m.id === selectedLesson.moduleId
+                  ? { ...m, lessons: m.lessons.map(l => l.id === updatedLesson.id ? updatedLesson : l) }
+                  : m
+              ),
+            }
+          : prev
+      );
+      setSelectedLesson({ moduleId: selectedLesson.moduleId, lesson: updatedLesson });
+    }
+  };
+
+  // Command Palette Handlers
+  const handleCommandNavigate = (path: string) => {
+    switch (path) {
+      case 'structure':
+        setActiveView('structure');
+        break;
+      case 'schedule':
+        setActiveView('drip-content');
+        break;
+      case 'sessions':
+        setActiveView('live-sessions');
+        break;
+    }
+  };
+
+  const handleCommandAIAction = (action: string) => {
+    // Trigger AI assistant with specific action
+    console.log('AI Action:', action);
+  };
+
+  const handleCommandPreview = (mode: string) => {
+    setPreviewMode(mode as any);
+    setShowCoursePreview(true);
+  };
+
   // Group modules by week for cohort courses
   const getModulesByWeek = () => {
     if (courseData?.delivery_type !== 'cohort') {
@@ -930,6 +1061,39 @@ export default function CourseContentPage() {
             </div>
 
             <div className="flex items-center gap-4">
+              {/* Advanced Tools */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCommandPalette(true)}
+                  className="border-[#E5E8E8] hover:border-[#4ECDC4] text-[#2C3E50]"
+                >
+                  <Command className="w-4 h-4 mr-2" />
+                  ⌘K
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCoursePreview(true)}
+                  className="border-[#E5E8E8] hover:border-[#4ECDC4] text-[#2C3E50]"
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  Preview
+                </Button>
+                {selectedLesson && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowVersionHistory(true)}
+                    className="border-[#E5E8E8] hover:border-[#4ECDC4] text-[#2C3E50]"
+                  >
+                    <History className="w-4 h-4 mr-2" />
+                    History
+                  </Button>
+                )}
+              </div>
+
               {renderSaveStatus()}
               <Button 
                 onClick={handleSaveChanges} 
@@ -1075,6 +1239,21 @@ export default function CourseContentPage() {
             <div className="h-full overflow-y-auto">
               {selectedLesson ? (
                 <div className="p-6">
+                  {/* AI Assistant Integration */}
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-[#2C3E50]">
+                      Editing: {selectedLesson.lesson.title}
+                    </h2>
+                    <AIAssistant
+                      selectedText={selectedText}
+                      onContentGenerated={handleAIContentGenerated}
+                      onQuizGenerated={handleAIQuizGenerated}
+                      lessonType={selectedLesson.lesson.type}
+                      lessonTitle={selectedLesson.lesson.title}
+                      moduleTitle={courseData.modules.find(m => m.id === selectedLesson.moduleId)?.title}
+                    />
+                  </div>
+
                   <LessonEditor
                     lesson={selectedLesson.lesson}
                     onUpdate={updatedLesson => {
@@ -1114,9 +1293,26 @@ export default function CourseContentPage() {
                   <div className="text-center">
                     <Edit className="w-16 h-16 text-[#4ECDC4] mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-[#2C3E50] mb-2">Select a lesson to edit</h3>
-                    <p className="text-[#2C3E50]/60">
+                    <p className="text-[#2C3E50]/60 mb-6">
                       Choose a lesson from the sidebar to start editing its content.
                     </p>
+                    <div className="flex items-center justify-center gap-4">
+                      <Button
+                        onClick={() => setShowCommandPalette(true)}
+                        variant="outline"
+                        className="border-[#E5E8E8] hover:border-[#4ECDC4]"
+                      >
+                        <Command className="w-4 h-4 mr-2" />
+                        Open Command Palette
+                      </Button>
+                      <Button
+                        onClick={() => setShowCoursePreview(true)}
+                        className="bg-[#4ECDC4] hover:bg-[#4ECDC4]/90 text-white"
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        Preview Course
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -1154,6 +1350,20 @@ export default function CourseContentPage() {
                           {selectedLesson.lesson.is_published ? "Published" : "Draft"}
                         </Badge>
                       </div>
+                    </div>
+
+                    {/* AI Suggestions */}
+                    <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                      <h5 className="text-sm font-semibold text-purple-900 mb-2 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4" />
+                        AI Suggestions
+                      </h5>
+                      <ul className="text-xs text-purple-800 space-y-1">
+                        <li>• Add more interactive elements</li>
+                        <li>• Include practical examples</li>
+                        <li>• Consider adding a quiz</li>
+                        <li>• Break into smaller sections</li>
+                      </ul>
                     </div>
                   </div>
                 ) : selectedModule ? (
@@ -1194,6 +1404,48 @@ export default function CourseContentPage() {
             </div>
           </div>
         </div>
+
+        {/* Advanced Features Modals */}
+        <CommandPalette
+          isOpen={showCommandPalette}
+          onClose={() => setShowCommandPalette(false)}
+          onNavigate={handleCommandNavigate}
+          onAIAction={handleCommandAIAction}
+          onPreview={handleCommandPreview}
+          courseData={courseData}
+        />
+
+        <CoursePreview
+          courseData={courseData}
+          isOpen={showCoursePreview}
+          onClose={() => setShowCoursePreview(false)}
+          previewMode={previewMode}
+          onModeChange={setPreviewMode}
+        />
+
+        {selectedLesson && (
+          <VersionHistory
+            lessonId={selectedLesson.lesson.id}
+            currentContent={selectedLesson.lesson.content}
+            onRestore={(content) => {
+              const updatedLesson = { ...selectedLesson.lesson, content };
+              setCourseData(prev =>
+                prev
+                  ? {
+                      ...prev,
+                      modules: prev.modules.map(m =>
+                        m.id === selectedLesson.moduleId
+                          ? { ...m, lessons: m.lessons.map(l => l.id === updatedLesson.id ? updatedLesson : l) }
+                          : m
+                      ),
+                    }
+                  : prev
+              );
+              setSelectedLesson({ moduleId: selectedLesson.moduleId, lesson: updatedLesson });
+            }}
+            onClose={() => setShowVersionHistory(false)}
+          />
+        )}
       </div>
     );
   }
@@ -1202,6 +1454,9 @@ export default function CourseContentPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#F7F9F9] to-white">
       <SiteHeader />
       {content}
+      {showVersionHistory && (
+        <div className="fixed inset-0 bg-black/50 z-50" />
+      )}
     </div>
   );
 }
