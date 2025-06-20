@@ -31,7 +31,10 @@ import {
   Settings,
   Save,
   Menu,
-  X
+  X,
+  Target,
+  Users,
+  Layers,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -67,6 +70,20 @@ interface Module {
   order: number;
 }
 
+interface LiveSession {
+  id: string;
+  title: string;
+  description?: string;
+  date: string;
+  time: string;
+  duration: number;
+  meeting_link?: string;
+  week_number: number;
+  max_participants?: number;
+  location?: string;
+  type: 'online' | 'in_person' | 'hybrid';
+}
+
 interface CourseData {
   id: string;
   title: string;
@@ -83,6 +100,7 @@ interface CourseData {
   end_date?: string; // Added for cohort courses
   status: 'draft' | 'pending_review' | 'published'; // Added status
   modules: Module[];
+  live_sessions?: LiveSession[]; // Added for cohort courses
 }
 
 interface DraggableModuleProps {
@@ -159,7 +177,15 @@ function DraggableModule({
       {/* Week Header for Cohort Courses */}
       {courseData.delivery_type === 'cohort' && weekNumber && (
         <div className="mb-2 px-3 py-1 bg-gradient-to-r from-[#FF6B35]/10 to-[#4ECDC4]/10 rounded-md">
-          <h4 className="text-sm font-semibold text-[#2C3E50]">Week {weekNumber}</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="text-sm font-semibold text-[#2C3E50]">Week {weekNumber}</h4>
+            {module.weekly_sprint_goal && (
+              <Badge variant="outline" className="text-xs border-[#FF6B35]/30 text-[#FF6B35]">
+                <Target className="w-3 h-3 mr-1" />
+                Goal Set
+              </Badge>
+            )}
+          </div>
         </div>
       )}
       
@@ -416,6 +442,11 @@ function DraggableLesson({
             {lesson.title}
           </span>
         )}
+        {lesson.is_published && (
+          <Badge variant="outline" className="text-xs border-green-200 text-green-700 bg-green-50">
+            Published
+          </Badge>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <Button
@@ -459,8 +490,11 @@ const categories = [
   "Freelancing",
 ];
 
-// Dynamically import LessonEditor client-side to avoid SSR hydration issues
+// Dynamically import components client-side to avoid SSR hydration issues
 const LessonEditor = dynamic(() => import("@/components/instructor/course-editor/LessonEditor"), { ssr: false });
+const LiveSessionScheduler = dynamic(() => import("@/components/instructor/course-editor/LiveSessionScheduler"), { ssr: false });
+const WeeklyGoalEditor = dynamic(() => import("@/components/instructor/course-editor/WeeklyGoalEditor"), { ssr: false });
+const DripContentManager = dynamic(() => import("@/components/instructor/course-editor/DripContentManager"), { ssr: false });
 
 const levelOptions = [
   { value: "beginner", label: "🌱 Beginner" },
@@ -478,7 +512,7 @@ export default function CourseContentPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedLesson, setSelectedLesson] = useState<{ moduleId: string, lesson: Lesson } | null>(null);
   const [selectedModule, setSelectedModule] = useState<{ module: Module } | null>(null);
-  const [activeView, setActiveView] = useState<'structure' | 'live-sessions'>('structure');
+  const [activeView, setActiveView] = useState<'structure' | 'live-sessions' | 'drip-content'>('structure');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
@@ -538,6 +572,7 @@ export default function CourseContentPage() {
               order: lesson.order || 0,
             })),
           })),
+          live_sessions: [], // TODO: Fetch from live_sessions table
         };
         setCourseData(transformedData);
 
@@ -627,6 +662,16 @@ export default function CourseContentPage() {
       updateCourseData({
         modules: courseData.modules.map((module) =>
           module.id === moduleId ? { ...module, title: newTitle } : module,
+        ),
+      });
+    }
+  };
+
+  const handleModuleUpdate = (moduleId: string, updates: Partial<Module>) => {
+    if (courseData) {
+      updateCourseData({
+        modules: courseData.modules.map((module) =>
+          module.id === moduleId ? { ...module, ...updates } : module,
         ),
       });
     }
@@ -863,6 +908,25 @@ export default function CourseContentPage() {
                   </>
                 )}
               </nav>
+
+              {/* Course Type Badge */}
+              <Badge variant="outline" className={`${
+                courseData.delivery_type === 'cohort' 
+                  ? 'border-[#FF6B35]/30 text-[#FF6B35]' 
+                  : 'border-[#4ECDC4]/30 text-[#4ECDC4]'
+              }`}>
+                {courseData.delivery_type === 'cohort' ? (
+                  <>
+                    <Users className="w-3 h-3 mr-1" />
+                    Cohort Course
+                  </>
+                ) : (
+                  <>
+                    <Clock className="w-3 h-3 mr-1" />
+                    Self-Paced
+                  </>
+                )}
+              </Badge>
             </div>
 
             <div className="flex items-center gap-4">
@@ -901,7 +965,7 @@ export default function CourseContentPage() {
                 </div>
                 
                 {/* Tabs for Cohort Courses */}
-                {courseData.delivery_type === 'cohort' && (
+                {courseData.delivery_type === 'cohort' ? (
                   <div className="flex mt-3 bg-[#F7F9F9] rounded-lg p-1">
                     <button
                       onClick={() => setActiveView('structure')}
@@ -911,7 +975,19 @@ export default function CourseContentPage() {
                           : 'text-[#2C3E50]/60 hover:text-[#2C3E50]'
                       }`}
                     >
+                      <Layers className="w-4 h-4 inline mr-1" />
                       Structure
+                    </button>
+                    <button
+                      onClick={() => setActiveView('drip-content')}
+                      className={`flex-1 px-3 py-2 text-sm rounded-md transition-colors ${
+                        activeView === 'drip-content'
+                          ? 'bg-white text-[#2C3E50] shadow-sm'
+                          : 'text-[#2C3E50]/60 hover:text-[#2C3E50]'
+                      }`}
+                    >
+                      <Calendar className="w-4 h-4 inline mr-1" />
+                      Schedule
                     </button>
                     <button
                       onClick={() => setActiveView('live-sessions')}
@@ -921,9 +997,13 @@ export default function CourseContentPage() {
                           : 'text-[#2C3E50]/60 hover:text-[#2C3E50]'
                       }`}
                     >
-                      <Calendar className="w-4 h-4 inline mr-1" />
-                      Live Sessions
+                      <Video className="w-4 h-4 inline mr-1" />
+                      Sessions
                     </button>
+                  </div>
+                ) : (
+                  <div className="mt-3 text-sm text-[#2C3E50]/60">
+                    Self-paced course structure
                   </div>
                 )}
               </div>
@@ -958,18 +1038,21 @@ export default function CourseContentPage() {
                       </div>
                     </SortableContext>
                   </DndContext>
+                ) : activeView === 'drip-content' ? (
+                  <DripContentManager
+                    modules={courseData.modules}
+                    onModuleUpdate={handleModuleUpdate}
+                    startDate={courseData.start_date}
+                    totalWeeks={12}
+                  />
                 ) : (
-                  <div className="text-center py-8">
-                    <Calendar className="w-12 h-12 text-[#4ECDC4] mx-auto mb-4" />
-                    <h4 className="text-lg font-semibold text-[#2C3E50] mb-2">Live Sessions</h4>
-                    <p className="text-sm text-[#2C3E50]/60 mb-4">
-                      Schedule and manage live sessions for your cohort course.
-                    </p>
-                    <Button className="bg-[#4ECDC4] hover:bg-[#4ECDC4]/90 text-white">
-                      <PlusCircle className="w-4 h-4 mr-2" />
-                      Add Live Session
-                    </Button>
-                  </div>
+                  <LiveSessionScheduler
+                    courseId={courseData.id}
+                    sessions={courseData.live_sessions || []}
+                    onSessionsChange={(sessions) => updateCourseData({ live_sessions: sessions })}
+                    startDate={courseData.start_date}
+                    endDate={courseData.end_date}
+                  />
                 )}
 
                 {/* Add Module Button */}
@@ -1091,30 +1174,11 @@ export default function CourseContentPage() {
 
                     {/* Weekly Sprint Goal for Cohort Courses */}
                     {courseData.delivery_type === 'cohort' && (
-                      <div>
-                        <Label htmlFor="weekly-goal" className="text-[#2C3E50] font-semibold">Weekly Sprint Goal</Label>
-                        <Textarea
-                          id="weekly-goal"
-                          value={selectedModule.module.weekly_sprint_goal || ''}
-                          onChange={(e) => {
-                            const updatedModule = { ...selectedModule.module, weekly_sprint_goal: e.target.value };
-                            setSelectedModule({ module: updatedModule });
-                            setCourseData(prev =>
-                              prev
-                                ? {
-                                    ...prev,
-                                    modules: prev.modules.map(m =>
-                                      m.id === selectedModule.module.id ? updatedModule : m
-                                    ),
-                                  }
-                                : prev
-                            );
-                          }}
-                          placeholder="Define the key outcome for this week..."
-                          className="mt-1 border-[#E5E8E8] focus:border-[#4ECDC4] focus:ring-[#4ECDC4]/20"
-                          rows={3}
-                        />
-                      </div>
+                      <WeeklyGoalEditor
+                        module={selectedModule.module}
+                        onUpdate={handleModuleUpdate}
+                        weekNumber={selectedModule.module.unlocks_on_week}
+                      />
                     )}
                   </div>
                 ) : (
