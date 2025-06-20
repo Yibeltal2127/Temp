@@ -4,26 +4,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { Button } from '@/components/ui/button';
-import {
-  Bold,
-  Italic,
-  List,
-  ListOrdered,
-  Link as LinkIcon,
-  Image as ImageIcon,
-  Code,
-  Quote,
-  Undo,
-  Redo,
-  Heading1,
-  Heading2,
-  Heading3,
-  Type,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  Separator,
-} from 'lucide-react';
+import { Bold, Italic, List, ListOrdered, Link as LinkIcon, Image as ImageIcon, Code, Quote, Undo, Redo, Heading1, Heading2, Heading3, Type, AlignLeft, AlignCenter, AlignRight, SeparatorVertical as Separator } from 'lucide-react';
 
 interface RichTextEditorProps {
   content: any; // Tiptap JSON content
