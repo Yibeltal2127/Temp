@@ -1,1 +1,1 @@
-self.__BUILD_MANIFEST=function(_){return{__rewrites:{afterFiles:[],beforeFiles:[],fallback:[]},__routerFilterStatic:_,__routerFilterDynamic:_,sortedPages:["/_app"]}}(void 0);self.__BUILD_MANIFEST_CB&&self.__BUILD_MANIFEST_CB();
+self.__BUILD_MANIFEST=function(r){return{__rewrites:{afterFiles:[],beforeFiles:[],fallback:[]},__routerFilterStatic:r,__routerFilterDynamic:r,"/_error":["static/chunks/pages/_error.js"],sortedPages:["/_app","/_error"]}}(void 0);self.__BUILD_MANIFEST_CB&&self.__BUILD_MANIFEST_CB();
