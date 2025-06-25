@@ -1,0 +1,83 @@
+Tabor Academy Brand Style Guide
+===============================
+
+🧱 BRAND IDENTITY
+
+Tabor Academy is a modern, interactive e-learning platform designed to rapidly equip individuals—especially from Africa's emerging markets—with entrepreneurial, digital, and freelancing skills through outcome-driven, project-based learning. Focusing on high-demand fields like digital marketing, no-code app development, e-commerce, AI tools, civil engineering solutions, and financial literacy, the academy combines microlearning, AI-powered and human-led personalized learning paths, mentorship and robust community support to help learners launch real-world businesses quickly. Its Africa-centric, mobile-first, offline-ready, gamified, and scalable design makes it an ideal gateway for aspiring entrepreneurs to move from learning to execution with confidence and tailored support.
+
+This brand represents transformation through knowledge — where education fuels innovation, and learning leads to leadership.
+
+🎨 BRAND COLORS & USAGE
+------------------------
+
+Primary Color:
+- Orange (#FF6B35)
+- Usage: Main call-to-action buttons, energetic highlights, progress indicators
+- Emotion: Boldness, action, growth, learning momentum
+
+Accent Color:
+- Teal (#4ECDC4)
+- Usage: Module highlights, icons, skill badges, links
+- Emotion: Intelligence, clarity, trust, calm focus
+
+Supporting Colors:
+- Charcoal Gray (#2C3E50) → Main headings, content text
+- Deep Forest Green (#1B4D3E) → Success states, highlighted notes, reinforcement areas
+- Light Gray (#E5E8E8) → Card or course block backgrounds
+- Soft White (#F7F9F9) + White (#FFFFFF) → Backgrounds, reading surfaces, clean space
+
+🔤 TYPOGRAPHY
+--------------
+- Sans-serif font system for clarity (Inter, Poppins, Helvetica Neue)
+- Headings: Bold, structured, intentional
+- Body Text: Regular or Light, high readability
+- Maintain consistent font sizing across all lesson formats and dashboards
+
+🧭 LOGO USAGE
+--------------
+- Use full-color version on light backgrounds
+- Use white version on dark backgrounds
+- “Tabor” in Orange, “Academy” in Teal
+- Always maintain clear space around the logo
+
+📱 CROSS-PLATFORM DESIGN GUIDELINES
+------------------------------------
+
+Website:
+- Use orange for CTAs, teal for highlights, white/gray for layout
+- Maintain structured sections with clear headers
+
+Mobile App:
+- Orange for action buttons, teal for icons
+- Keep interface clean and intuitive
+
+Social Media:
+- Bold text-based posts using brand mottos
+- Orange + Teal background variations
+- Maintain visual consistency in layouts
+
+Print / Banners:
+- Use orange as dominant brand color
+- Support with teal in layouts and accents
+
+Email:
+- Branded header/footer
+- Orange CTA buttons
+- Teal icons or section dividers
+
+Tabor Academy:
+- Emphasize teal to reflect learning and intelligence
+- Use orange to show action and momentum
+- Stick to modern, minimal layouts
+
+📚 ACADEMY-SPECIFIC DESIGN USAGE
+---------------------------------
+
+LMS Platform:
+- Orange CTAs (Start Learning, Complete Lesson, etc.)
+- Teal highlights for quiz status, course tags, skill areas
+- Icons and badges consistently styled in teal with simple outlines
+
+Certifications:
+- Use deep forest green for approval messages and certification completion
+- Orange headers for course titles and training levels
