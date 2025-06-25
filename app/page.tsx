@@ -98,8 +98,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Overview Section */}
-      <section className="py-20 bg-gray-50/50 relative overflow-hidden">
+      {/* Features Overview Section - Added id="courses" */}
+      <section id="courses" className="py-20 bg-gray-50/50 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
         <div className="container px-4 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
@@ -145,8 +145,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      {/* Testimonials Section - Added id="success-stories" */}
+      <section id="success-stories" className="py-20 bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
         <div className="container px-4 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
@@ -200,8 +200,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partners Section */}
-      <section className="py-20 bg-gray-50/50 relative overflow-hidden">
+      {/* Partners Section - Added id="partners" */}
+      <section id="partners" className="py-20 bg-gray-50/50 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
         <div className="container px-4 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
@@ -218,6 +218,80 @@ export default function Home() {
                 className="opacity-70 hover:opacity-100 transition-opacity hover-scale"
               />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section - Added new section with id="pricing" */}
+      <section id="pricing" className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
+        <div className="container px-4 md:px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
+            Choose Your Learning Path
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Free Plan */}
+            <Card className="p-6 card-hover gradient-border">
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-2">Free Access</h3>
+                <div className="text-3xl font-bold text-[#4ECDC4] mb-4">$0</div>
+                <p className="text-muted-foreground mb-6">Perfect for getting started</p>
+                <ul className="space-y-2 text-sm text-left mb-6">
+                  <li>• Access to 3 introductory courses</li>
+                  <li>• Basic community access</li>
+                  <li>• Mobile learning app</li>
+                  <li>• Progress tracking</li>
+                </ul>
+                <Button className="w-full bg-[#4ECDC4] hover:bg-[#4ECDC4]/90 text-white" asChild>
+                  <Link href="/signup">Get Started Free</Link>
+                </Button>
+              </div>
+            </Card>
+
+            {/* Premium Plan */}
+            <Card className="p-6 card-hover gradient-border relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span className="bg-[#FF6B35] text-white px-3 py-1 rounded-full text-sm font-medium">
+                  Most Popular
+                </span>
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-2">Premium</h3>
+                <div className="text-3xl font-bold text-[#FF6B35] mb-4">$29<span className="text-lg">/month</span></div>
+                <p className="text-muted-foreground mb-6">For serious learners</p>
+                <ul className="space-y-2 text-sm text-left mb-6">
+                  <li>• Access to all courses</li>
+                  <li>• 1-on-1 mentorship sessions</li>
+                  <li>• Project-based learning</li>
+                  <li>• Certificate of completion</li>
+                  <li>• Priority community support</li>
+                  <li>• Offline content access</li>
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white" asChild>
+                  <Link href="/signup?plan=premium">Start Premium</Link>
+                </Button>
+              </div>
+            </Card>
+
+            {/* Enterprise Plan */}
+            <Card className="p-6 card-hover gradient-border">
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-2">Enterprise</h3>
+                <div className="text-3xl font-bold text-[#2C3E50] mb-4">Custom</div>
+                <p className="text-muted-foreground mb-6">For organizations</p>
+                <ul className="space-y-2 text-sm text-left mb-6">
+                  <li>• Custom learning paths</li>
+                  <li>• Team management tools</li>
+                  <li>• Advanced analytics</li>
+                  <li>• Dedicated support</li>
+                  <li>• White-label options</li>
+                  <li>• API access</li>
+                </ul>
+                <Button variant="outline" className="w-full border-[#2C3E50] text-[#2C3E50] hover:bg-[#2C3E50] hover:text-white" asChild>
+                  <Link href="/contact">Contact Sales</Link>
+                </Button>
+              </div>
+            </Card>
           </div>
         </div>
       </section>

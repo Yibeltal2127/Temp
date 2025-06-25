@@ -67,6 +67,19 @@ export function SiteHeader() {
     }
   }
 
+  // Smooth scroll function for anchor links
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault()
+    const element = document.getElementById(targetId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+    setIsMobileMenuOpen(false)
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -87,8 +100,12 @@ export function SiteHeader() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6 ml-6">
-          <Link href="/about" className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]">
-            About
+          <Link 
+            href="/#partners" 
+            className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
+            onClick={(e) => handleSmoothScroll(e, 'partners')}
+          >
+            For Partners
           </Link>
           
           {/* Courses Dropdown */}
@@ -144,7 +161,11 @@ export function SiteHeader() {
                 </div>
                 <DropdownMenuSeparator className="my-2 bg-[#E5E8E8]" />
                 <DropdownMenuItem asChild className="focus:bg-[#4ECDC4]/10 focus:text-[#4ECDC4] rounded-md">
-                  <Link href="/courses" className="cursor-pointer font-medium flex items-center gap-2">
+                  <Link 
+                    href="/#courses" 
+                    className="cursor-pointer font-medium flex items-center gap-2"
+                    onClick={(e) => handleSmoothScroll(e, 'courses')}
+                  >
                     <span className="text-[#2C3E50]">All Courses</span>
                   </Link>
                 </DropdownMenuItem>
@@ -152,14 +173,19 @@ export function SiteHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <Link href="/pricing" className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]">
+          <Link 
+            href="/#pricing" 
+            className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
+            onClick={(e) => handleSmoothScroll(e, 'pricing')}
+          >
             Pricing
           </Link>
-          <Link href="/success-stories" className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]">
+          <Link 
+            href="/#success-stories" 
+            className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
+            onClick={(e) => handleSmoothScroll(e, 'success-stories')}
+          >
             Success Stories
-          </Link>
-          <Link href="/faq" className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]">
-            FAQ
           </Link>
         </nav>
 
@@ -210,7 +236,7 @@ export function SiteHeader() {
                 <Link href="/login">Login</Link>
               </Button>
               <Button className="bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white" asChild>
-                <Link href="/signup">Sign Up</Link>
+                <Link href="/signup">Start Learning Free</Link>
               </Button>
             </div>
           )}
@@ -232,20 +258,20 @@ export function SiteHeader() {
         <div className="md:hidden border-t border-[#E5E8E8]">
           <div className="container py-4 space-y-2">
             <Link
-              href="/about"
+              href="/#partners"
               className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => handleSmoothScroll(e, 'partners')}
             >
-              About
+              For Partners
             </Link>
             
             {/* Mobile Courses Submenu */}
             <div className="px-4 py-2">
               <div className="flex items-center justify-between text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md">
                 <Link
-                  href="/courses"
+                  href="/#courses"
                   className="block"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => handleSmoothScroll(e, 'courses')}
                 >
                   Courses
                 </Link>
@@ -312,26 +338,31 @@ export function SiteHeader() {
             </div>
 
             <Link
-              href="/pricing"
+              href="/#pricing"
               className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => handleSmoothScroll(e, 'pricing')}
             >
               Pricing
             </Link>
             <Link
-              href="/success-stories"
+              href="/#success-stories"
               className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => handleSmoothScroll(e, 'success-stories')}
             >
               Success Stories
             </Link>
-            <Link
-              href="/faq"
-              className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              FAQ
-            </Link>
+
+            {/* Mobile Auth Buttons */}
+            {!user && (
+              <div className="pt-4 space-y-2">
+                <Button variant="ghost" asChild className="w-full text-[#2C3E50] hover:text-[#4ECDC4]">
+                  <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
+                </Button>
+                <Button className="w-full bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white" asChild>
+                  <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>Start Learning Free</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}

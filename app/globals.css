@@ -64,6 +64,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer utilities {
@@ -80,11 +83,11 @@
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-orange-500 to-brand-teal-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4];
   }
 
   .gradient-border {
-    @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-brand-orange-500 before:to-brand-teal-500 before:opacity-20 before:blur-sm hover:before:opacity-30 before:transition-opacity;
+    @apply relative before:absolute before:-inset-1 before:rounded-lg before:bg-gradient-to-r before:from-[#FF6B35] before:to-[#4ECDC4] before:opacity-20 before:blur-sm hover:before:opacity-30 before:transition-opacity;
   }
 
   .card-hover {
