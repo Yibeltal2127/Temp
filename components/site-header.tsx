@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Globe, Menu, ChevronDown, User, LogOut } from "lucide-react"
+import { Globe, Menu, ChevronDown, User, LogOut, HelpCircle } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -162,9 +162,8 @@ export function SiteHeader() {
                 <DropdownMenuSeparator className="my-2 bg-[#E5E8E8]" />
                 <DropdownMenuItem asChild className="focus:bg-[#4ECDC4]/10 focus:text-[#4ECDC4] rounded-md">
                   <Link 
-                    href="/#courses" 
+                    href="/courses" 
                     className="cursor-pointer font-medium flex items-center gap-2"
-                    onClick={(e) => handleSmoothScroll(e, 'courses')}
                   >
                     <span className="text-[#2C3E50]">All Courses</span>
                   </Link>
@@ -174,18 +173,20 @@ export function SiteHeader() {
           </DropdownMenu>
           
           <Link 
-            href="/#pricing" 
-            className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
-            onClick={(e) => handleSmoothScroll(e, 'pricing')}
-          >
-            Pricing
-          </Link>
-          <Link 
             href="/#success-stories" 
             className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
             onClick={(e) => handleSmoothScroll(e, 'success-stories')}
           >
             Success Stories
+          </Link>
+
+          {/* FAQs Link */}
+          <Link 
+            href="/faqs" 
+            className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4] flex items-center gap-1"
+          >
+            <HelpCircle className="w-4 h-4" />
+            FAQs
           </Link>
         </nav>
 
@@ -269,9 +270,9 @@ export function SiteHeader() {
             <div className="px-4 py-2">
               <div className="flex items-center justify-between text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md">
                 <Link
-                  href="/#courses"
+                  href="/courses"
                   className="block"
-                  onClick={(e) => handleSmoothScroll(e, 'courses')}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Courses
                 </Link>
@@ -338,18 +339,21 @@ export function SiteHeader() {
             </div>
 
             <Link
-              href="/#pricing"
-              className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
-              onClick={(e) => handleSmoothScroll(e, 'pricing')}
-            >
-              Pricing
-            </Link>
-            <Link
               href="/#success-stories"
               className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
               onClick={(e) => handleSmoothScroll(e, 'success-stories')}
             >
               Success Stories
+            </Link>
+
+            {/* Mobile FAQs Link */}
+            <Link
+              href="/faqs"
+              className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md flex items-center gap-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <HelpCircle className="w-4 h-4" />
+              FAQs
             </Link>
 
             {/* Mobile Auth Buttons */}
