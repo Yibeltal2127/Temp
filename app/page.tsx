@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { AIDemoCard } from "@/components/ai-demo-card"
 import { HowItWorksSection } from "@/components/how-it-works-section"
+import { SuccessStoriesSection } from "@/components/success-stories-section"
 
 export default function Home() {
   console.time("HomePageRender");
@@ -334,6 +335,9 @@ export default function Home() {
       {/* How It Works Section */}
       <HowItWorksSection />
 
+      {/* Success Stories Section */}
+      <SuccessStoriesSection />
+
       {/* Features Overview Section - Added id="courses" */}
       <section id="courses" className="py-20 bg-gray-50/50 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
@@ -377,61 +381,6 @@ export default function Home() {
                 </Link>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section - Added id="success-stories" */}
-      <section id="success-stories" className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
-        <div className="container px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">
-            Success Stories from Africa
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "Thanks to Tabor Digital Academy, I launched my digital marketing agency and now serve clients across East Africa.",
-                name: "Sarah Mwangi",
-                location: "Kenya",
-                image: "https://images.unsplash.com/photo-1539701938214-0d9736e1c16b"
-              },
-              {
-                quote: "The no-code development course helped me build my first app. Now I'm teaching others in my community.",
-                name: "John Okafor",
-                location: "Nigeria",
-                image: "https://images.unsplash.com/photo-1507152832244-10d45c7eda57"
-              },
-              {
-                quote: "The mentorship program gave me the confidence to start my e-commerce business. My sales grow every month.",
-                name: "Grace Mensah",
-                location: "Ghana",
-                image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce"
-              }
-            ].map((testimonial, index) => (
-              <Card key={index} className="p-6 card-hover gradient-border">
-                <Quote className="h-8 w-8 text-teal-600 mb-4" />
-                <p className="text-muted-foreground mb-4">{testimonial.quote}</p>
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    width={50}
-                    height={50}
-                    className="rounded-full hover-scale"
-                  />
-                  <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.location}</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Button variant="outline" size="lg" className="hover-scale" asChild>
-              <Link href="/success-stories">View All Success Stories</Link>
-            </Button>
           </div>
         </div>
       </section>
