@@ -1,19 +1,20 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, CheckCircle, Star, TrendingUp, Shield, Users, Award, Clock, Globe, Zap } from "lucide-react"
+import { ArrowRight, CheckCircle, Star, TrendingUp, Shield, Users, Award, Clock, Globe, Zap, Laptop, Brain, AlertCircle, DollarSign, Target } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { AIDemoCard } from "@/components/ai-demo-card"
 import { HowItWorksSection } from "@/components/how-it-works-section"
 import { SuccessStoriesSection } from "@/components/success-stories-section"
+import { AnimatedStats } from "@/components/animated-stats"
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       
-      {/* 1. Hero Section */}
+      {/* 1. Enhanced Hero Section */}
       <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#FF6B35]/5 via-[#4ECDC4]/5 to-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
@@ -24,10 +25,13 @@ export default function Home() {
         
         <div className="container px-4 md:px-6 relative z-10">
           <div className="grid gap-12 lg:grid-cols-2 items-center">
-            {/* Left Content */}
-            <div className="flex flex-col gap-6 animate-fade-up">
+            {/* Left Content with Enhanced Text Overlay */}
+            <div className="flex flex-col gap-6 animate-fade-up relative">
+              {/* Enhanced gradient overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent -z-10 rounded-2xl blur-sm lg:hidden" />
+              
               {/* Trust Badge */}
-              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 border border-[#E5E8E8] w-fit">
+              <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 border border-[#E5E8E8] w-fit shadow-sm">
                 <div className="flex -space-x-1">
                   <div className="w-6 h-6 bg-[#4ECDC4] rounded-full border-2 border-white"></div>
                   <div className="w-6 h-6 bg-[#FF6B35] rounded-full border-2 border-white"></div>
@@ -36,17 +40,17 @@ export default function Home() {
                 <span className="text-sm font-medium text-[#2C3E50]">Join 10,000+ African entrepreneurs</span>
               </div>
 
-              {/* Main Headline */}
+              {/* Main Headline with Enhanced Typography */}
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-                  <span className="block text-[#2C3E50]">Your</span>
-                  <span className="block bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+                  <span className="block text-[#2C3E50] drop-shadow-sm">Your</span>
+                  <span className="block bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent drop-shadow-sm">
                     Launchpad:
                   </span>
-                  <span className="block text-[#2C3E50]">From Idea to Income</span>
+                  <span className="block text-[#2C3E50] drop-shadow-sm">From Idea to Income</span>
                 </h1>
                 
-                <p className="text-xl md:text-2xl text-[#2C3E50]/80 leading-relaxed max-w-2xl">
+                <p className="text-xl md:text-2xl text-[#2C3E50]/90 leading-relaxed max-w-2xl font-medium">
                   Tabor Academy provides <span className="font-semibold text-[#4ECDC4]">mobile-first, project-based education</span> tailored for Africa, connecting you with mentors and a community to launch a real business.
                 </p>
               </div>
@@ -71,12 +75,12 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 mt-6">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                  className="bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group text-lg px-8 py-4"
                   asChild
                 >
                   <Link href="/signup" className="flex items-center gap-2">
                     Start Your Journey Today
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               </div>
@@ -98,44 +102,56 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Visual */}
+            {/* Right Visual - Enhanced Images */}
             <div className="relative animate-fade-in">
-              {/* Main Image Container */}
+              {/* Main Image Container with Enhanced Styling */}
               <div className="relative">
-                {/* Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4ECDC4]/20 to-[#FF6B35]/20 rounded-2xl blur-2xl scale-105" />
+                {/* Enhanced Gradient Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4ECDC4]/30 to-[#FF6B35]/30 rounded-3xl blur-3xl scale-110" />
                 
-                {/* Main Image */}
-                <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                  <Image
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-                    alt="African entrepreneurs learning and collaborating"
-                    width={600}
-                    height={400}
-                    className="rounded-xl shadow-2xl hover:scale-105 transition-transform duration-500"
-                    priority
-                  />
+                {/* Main Image with Better Composition */}
+                <div className="relative bg-white/20 backdrop-blur-sm rounded-3xl p-6 border border-white/30 shadow-2xl">
+                  <div className="relative overflow-hidden rounded-2xl">
+                    {/* Text overlay gradient for better readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
+                    
+                    <Image
+                      src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
+                      alt="African entrepreneurs learning and collaborating"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
+                      priority
+                    />
+                    
+                    {/* Overlay text for context */}
+                    <div className="absolute bottom-4 left-4 right-4 z-20">
+                      <p className="text-white text-sm font-medium drop-shadow-lg">
+                        Real entrepreneurs, real success stories
+                      </p>
+                    </div>
+                  </div>
                   
-                  {/* Floating Stats Cards */}
-                  <div className="absolute -top-4 -left-4 bg-white rounded-lg shadow-lg p-3 border border-[#E5E8E8]">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#4ECDC4]/20 rounded-full flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-[#4ECDC4]" />
+                  {/* Enhanced Floating Stats Cards */}
+                  <div className="absolute -top-6 -left-6 bg-white rounded-xl shadow-xl p-4 border border-[#E5E8E8] animate-float">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-[#4ECDC4]/20 rounded-full flex items-center justify-center">
+                        <Users className="w-5 h-5 text-[#4ECDC4]" />
                       </div>
                       <div>
-                        <div className="text-lg font-bold text-[#2C3E50]">10K+</div>
+                        <div className="text-xl font-bold text-[#2C3E50]">10K+</div>
                         <div className="text-xs text-[#2C3E50]/60">Active Learners</div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-3 border border-[#E5E8E8]">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#FF6B35]/20 rounded-full flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-[#FF6B35]" />
+                  <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-4 border border-[#E5E8E8] animate-float delay-500">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-[#FF6B35]/20 rounded-full flex items-center justify-center">
+                        <Globe className="w-5 h-5 text-[#FF6B35]" />
                       </div>
                       <div>
-                        <div className="text-lg font-bold text-[#2C3E50]">15+</div>
+                        <div className="text-xl font-bold text-[#2C3E50]">15+</div>
                         <div className="text-xs text-[#2C3E50]/60">Countries</div>
                       </div>
                     </div>
@@ -150,36 +166,11 @@ export default function Home() {
       {/* 2. Animated Social Proof Section (Momentum Bar) */}
       <section className="py-12 bg-white border-b border-[#E5E8E8]/50">
         <div className="container px-4 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
-                10,000+
-              </div>
-              <div className="text-sm text-[#2C3E50]/70">Active Learners</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
-                15+
-              </div>
-              <div className="text-sm text-[#2C3E50]/70">Countries Served</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
-                85%
-              </div>
-              <div className="text-sm text-[#2C3E50]/70">Success Rate</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
-                2,500+
-              </div>
-              <div className="text-sm text-[#2C3E50]/70">Businesses Launched</div>
-            </div>
-          </div>
+          <AnimatedStats />
         </div>
       </section>
 
-      {/* 3. Problem & Solution Section with AI Micro-Demo */}
+      {/* 3. Problem & Solution Section with Enhanced Icons */}
       <section className="py-20 bg-gradient-to-br from-[#F7F9F9] to-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
         
@@ -190,6 +181,11 @@ export default function Home() {
         <div className="container px-4 md:px-6 relative">
           {/* Problem Statement */}
           <div className="text-center max-w-4xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-[#FF6B35]/10 rounded-full px-4 py-2 mb-6">
+              <AlertCircle className="w-4 h-4 text-[#FF6B35]" />
+              <span className="text-sm font-medium text-[#FF6B35]">The Challenge</span>
+            </div>
+            
             <h2 className="text-3xl md:text-5xl font-bold text-[#2C3E50] mb-6">
               Traditional Education Isn't Built for 
               <span className="block bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
@@ -201,10 +197,48 @@ export default function Home() {
               You have brilliant business ideas, but existing education platforms are expensive, 
               require constant internet, and teach generic skills that don't address Africa's unique opportunities and challenges.
             </p>
+
+            {/* Problem Points */}
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <div className="flex items-start gap-3 text-left">
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <DollarSign className="w-4 h-4 text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#2C3E50] mb-1">Too Expensive</h4>
+                  <p className="text-sm text-[#2C3E50]/70">Most platforms cost $100+ per month - out of reach for emerging entrepreneurs</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 text-left">
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <Clock className="w-4 h-4 text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#2C3E50] mb-1">Internet Dependent</h4>
+                  <p className="text-sm text-[#2C3E50]/70">Require constant high-speed internet that's unreliable or expensive in many areas</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 text-left">
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <Target className="w-4 h-4 text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#2C3E50] mb-1">Generic Content</h4>
+                  <p className="text-sm text-[#2C3E50]/70">One-size-fits-all courses that ignore local markets, regulations, and opportunities</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Solution Statement */}
           <div className="text-center max-w-4xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-[#1B4D3E]/10 rounded-full px-4 py-2 mb-6">
+              <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+              <span className="text-sm font-medium text-[#1B4D3E]">The Solution</span>
+            </div>
+            
             <h2 className="text-3xl md:text-5xl font-bold text-[#2C3E50] mb-6">
               Africa-First Education That 
               <span className="block bg-gradient-to-r from-[#4ECDC4] to-[#1B4D3E] bg-clip-text text-transparent">
@@ -218,12 +252,12 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Solution Features Grid with AI Demo */}
+          {/* Solution Features Grid with Enhanced Icons */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Feature 1: Mobile-First Learning */}
             <div className="p-6 border border-[#E5E8E8] rounded-lg hover:border-[#4ECDC4]/40 transition-all duration-300 hover:shadow-lg group bg-white">
               <div className="w-12 h-12 bg-[#4ECDC4]/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <CheckCircle className="w-6 h-6 text-[#4ECDC4]" />
+                <Laptop className="w-6 h-6 text-[#4ECDC4]" />
               </div>
               <h3 className="text-lg font-semibold text-[#2C3E50] mb-2">Mobile-First Learning</h3>
               <p className="text-[#2C3E50]/70 text-sm leading-relaxed">
@@ -234,7 +268,7 @@ export default function Home() {
             {/* Feature 2: AI-Powered Mentorship */}
             <div className="p-6 border border-[#E5E8E8] rounded-lg hover:border-[#4ECDC4]/40 transition-all duration-300 hover:shadow-lg group bg-white">
               <div className="w-12 h-12 bg-[#FF6B35]/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Star className="w-6 h-6 text-[#FF6B35]" />
+                <Brain className="w-6 h-6 text-[#FF6B35]" />
               </div>
               <h3 className="text-lg font-semibold text-[#2C3E50] mb-2">AI-Powered Mentorship</h3>
               <p className="text-[#2C3E50]/70 text-sm leading-relaxed">
@@ -245,7 +279,7 @@ export default function Home() {
             {/* Feature 3: Real-World Projects */}
             <div className="p-6 border border-[#E5E8E8] rounded-lg hover:border-[#4ECDC4]/40 transition-all duration-300 hover:shadow-lg group bg-white">
               <div className="w-12 h-12 bg-[#1B4D3E]/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-6 h-6 text-[#1B4D3E]" />
+                <Zap className="w-6 h-6 text-[#1B4D3E]" />
               </div>
               <h3 className="text-lg font-semibold text-[#2C3E50] mb-2">Real-World Projects</h3>
               <p className="text-[#2C3E50]/70 text-sm leading-relaxed">
