@@ -149,6 +149,88 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  /* Course Catalog Specific Utilities */
+  .course-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .course-list {
+    @apply space-y-4;
+  }
+
+  .filter-sidebar {
+    @apply w-80 bg-white border-r border-[#E5E8E8] overflow-y-auto;
+  }
+
+  .search-highlight {
+    @apply bg-[#FF6B35]/20 text-[#FF6B35] font-medium;
+  }
+
+  /* Loading States */
+  .skeleton {
+    @apply animate-pulse bg-[#E5E8E8] rounded;
+  }
+
+  .skeleton-text {
+    @apply skeleton h-4 w-full mb-2;
+  }
+
+  .skeleton-title {
+    @apply skeleton h-6 w-3/4 mb-4;
+  }
+
+  .skeleton-image {
+    @apply skeleton h-48 w-full mb-4;
+  }
+
+  /* Course Card Enhancements */
+  .course-card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-[#4ECDC4]/40;
+  }
+
+  .course-tag {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#4ECDC4]/10 text-[#4ECDC4] border border-[#4ECDC4]/20;
+  }
+
+  .instructor-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#FF6B35]/10 text-[#FF6B35] border border-[#FF6B35]/20;
+  }
+
+  /* Filter Animations */
+  .filter-slide-in {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  .filter-slide-out {
+    animation: slide-out-right 0.3s ease-in;
+  }
+
+  /* Search Results */
+  .search-result-highlight {
+    @apply bg-[#4ECDC4]/20 px-1 rounded;
+  }
+
+  .no-results {
+    @apply text-center py-16 text-[#2C3E50]/60;
+  }
+
+  /* Responsive Grid Utilities */
+  .responsive-grid-1 {
+    @apply grid grid-cols-1;
+  }
+
+  .responsive-grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2;
+  }
+
+  .responsive-grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .responsive-grid-4 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
 }
 
 @keyframes fade-up {
@@ -197,6 +279,28 @@
   }
   to {
     box-shadow: 0 0 30px rgba(78, 205, 196, 0.4);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
 
