@@ -5,6 +5,7 @@ import { Laptop, Brain, Users, BarChart3, Code, Coins, GraduationCap, Play, Quot
 import Image from "next/image"
 import Link from "next/link"
 import { AIDemoCard } from "@/components/ai-demo-card"
+import { HowItWorksSection } from "@/components/how-it-works-section"
 
 export default function Home() {
   console.time("HomePageRender");
@@ -329,6 +330,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* How It Works Section */}
+      <HowItWorksSection />
 
       {/* Features Overview Section - Added id="courses" */}
       <section id="courses" className="py-20 bg-gray-50/50 relative overflow-hidden">
