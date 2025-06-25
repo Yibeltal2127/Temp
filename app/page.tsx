@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/site-header"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Laptop, Brain, Users, BarChart3, Code, Coins, GraduationCap, Play, Quote } from "lucide-react"
+import { Laptop, Brain, Users, BarChart3, Code, Coins, GraduationCap, Play, Quote, ArrowRight, CheckCircle, Star, TrendingUp } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -11,55 +11,179 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-28 bg-gradient-to-br from-orange-50 via-teal-50 to-white overflow-hidden">
+      {/* Enhanced Hero Section */}
+      <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#FF6B35]/5 via-[#4ECDC4]/5 to-white overflow-hidden">
+        {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-12 md:grid-cols-2 items-center">
-            <div className="flex flex-col gap-4 animate-fade-up">
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
-                Empower Your Future with Digital Skills
-              </h1>
-              <p className="text-xl text-muted-foreground">
-                Join Africa's leading e-learning platform for entrepreneurship, digital skills, and
-                freelancing success. Learn from anywhere, anytime.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <Button size="lg" className="bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-teal-400" asChild>
-                  <Link href="/signup">Start Learning Free</Link>
+        
+        {/* Animated Background Elements */}
+        <div className="absolute top-20 right-20 w-72 h-72 bg-gradient-to-r from-[#FF6B35]/10 to-[#4ECDC4]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-r from-[#4ECDC4]/10 to-[#FF6B35]/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        
+        <div className="container px-4 md:px-6 relative z-10">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            {/* Left Content */}
+            <div className="flex flex-col gap-6 animate-fade-up">
+              {/* Trust Badge */}
+              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 border border-[#E5E8E8] w-fit">
+                <div className="flex -space-x-1">
+                  <div className="w-6 h-6 bg-[#4ECDC4] rounded-full border-2 border-white"></div>
+                  <div className="w-6 h-6 bg-[#FF6B35] rounded-full border-2 border-white"></div>
+                  <div className="w-6 h-6 bg-[#1B4D3E] rounded-full border-2 border-white"></div>
+                </div>
+                <span className="text-sm font-medium text-[#2C3E50]">Join 10,000+ African entrepreneurs</span>
+              </div>
+
+              {/* Main Headline */}
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+                  <span className="block text-[#2C3E50]">Your</span>
+                  <span className="block bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                    Launchpad:
+                  </span>
+                  <span className="block text-[#2C3E50]">From Idea to Income</span>
+                </h1>
+                
+                <p className="text-xl md:text-2xl text-[#2C3E50]/80 leading-relaxed max-w-2xl">
+                  Tabor Academy provides <span className="font-semibold text-[#4ECDC4]">mobile-first, project-based education</span> tailored for Africa, connecting you with mentors and a community to launch a real business.
+                </p>
+              </div>
+
+              {/* Value Props */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-[#1B4D3E]" />
+                  <span className="text-sm font-medium text-[#2C3E50]">Mobile-First Learning</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-[#1B4D3E]" />
+                  <span className="text-sm font-medium text-[#2C3E50]">Real Mentorship</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-[#1B4D3E]" />
+                  <span className="text-sm font-medium text-[#2C3E50]">Project-Based</span>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 mt-6">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                  asChild
+                >
+                  <Link href="/signup" className="flex items-center gap-2">
+                    Start Your Journey Today
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="group" asChild>
-                  <Link href="/demo">
-                    <Play className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
+                
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-[#4ECDC4] text-[#4ECDC4] hover:bg-[#4ECDC4] hover:text-white group transition-all duration-300"
+                  asChild
+                >
+                  <Link href="#demo" className="flex items-center gap-2">
+                    <Play className="w-4 h-4 transition-transform group-hover:scale-110" />
                     Watch Demo
                   </Link>
                 </Button>
               </div>
-              <div className="grid grid-cols-3 gap-4 mt-8">
-                <div className="stat-card">
-                  <div className="text-2xl font-bold gradient-text">10K+</div>
-                  <div className="text-sm text-muted-foreground">Active Learners</div>
+
+              {/* Social Proof */}
+              <div className="flex items-center gap-6 pt-4 border-t border-[#E5E8E8]/50">
+                <div className="flex items-center gap-2">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="w-4 h-4 fill-[#FF6B35] text-[#FF6B35]" />
+                    ))}
+                  </div>
+                  <span className="text-sm text-[#2C3E50]/70">4.9/5 from 2,000+ reviews</span>
                 </div>
-                <div className="stat-card">
-                  <div className="text-2xl font-bold gradient-text">15+</div>
-                  <div className="text-sm text-muted-foreground">Countries Served</div>
-                </div>
-                <div className="stat-card">
-                  <div className="text-2xl font-bold gradient-text">85%</div>
-                  <div className="text-sm text-muted-foreground">Success Rate</div>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-[#1B4D3E]" />
+                  <span className="text-sm text-[#2C3E50]/70">85% success rate</span>
                 </div>
               </div>
             </div>
+
+            {/* Right Visual */}
             <div className="relative animate-fade-in">
-              <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-orange-500 rounded-lg blur-2xl opacity-20 animate-pulse" />
-              <Image
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-                alt="Students learning"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-2xl relative hover-scale"
-                priority
-              />
+              {/* Main Image Container */}
+              <div className="relative">
+                {/* Gradient Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#4ECDC4]/20 to-[#FF6B35]/20 rounded-2xl blur-2xl scale-105" />
+                
+                {/* Main Image */}
+                <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                  <Image
+                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
+                    alt="African entrepreneurs learning and collaborating"
+                    width={600}
+                    height={400}
+                    className="rounded-xl shadow-2xl hover:scale-105 transition-transform duration-500"
+                    priority
+                  />
+                  
+                  {/* Floating Stats Cards */}
+                  <div className="absolute -top-4 -left-4 bg-white rounded-lg shadow-lg p-3 border border-[#E5E8E8]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-[#4ECDC4]/20 rounded-full flex items-center justify-center">
+                        <Users className="w-4 h-4 text-[#4ECDC4]" />
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-[#2C3E50]">10K+</div>
+                        <div className="text-xs text-[#2C3E50]/60">Active Learners</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-3 border border-[#E5E8E8]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-[#FF6B35]/20 rounded-full flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-[#FF6B35]" />
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-[#2C3E50]">15+</div>
+                        <div className="text-xs text-[#2C3E50]/60">Countries</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Animated Social Proof Section (Momentum Bar) */}
+      <section className="py-12 bg-white border-b border-[#E5E8E8]/50">
+        <div className="container px-4 md:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                10,000+
+              </div>
+              <div className="text-sm text-[#2C3E50]/70">Active Learners</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                15+
+              </div>
+              <div className="text-sm text-[#2C3E50]/70">Countries Served</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                85%
+              </div>
+              <div className="text-sm text-[#2C3E50]/70">Success Rate</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                2,500+
+              </div>
+              <div className="text-sm text-[#2C3E50]/70">Businesses Launched</div>
             </div>
           </div>
         </div>
