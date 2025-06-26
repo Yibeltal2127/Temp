@@ -173,6 +173,13 @@ export function SiteHeader() {
           </DropdownMenu>
           
           <Link 
+            href="/#pricing" 
+            className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
+            onClick={(e) => handleSmoothScroll(e, 'pricing')}
+          >
+            Pricing
+          </Link>
+          <Link 
             href="/#success-stories" 
             className="text-sm font-medium text-[#2C3E50] transition-colors hover:text-[#4ECDC4]"
             onClick={(e) => handleSmoothScroll(e, 'success-stories')}
@@ -338,6 +345,13 @@ export function SiteHeader() {
               </div>
             </div>
 
+            <Link
+              href="/#pricing"
+              className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"
+              onClick={(e) => handleSmoothScroll(e, 'pricing')}
+            >
+              Pricing
+            </Link>
             <Link
               href="/#success-stories"
               className="block px-4 py-2 text-sm text-[#2C3E50] hover:bg-[#4ECDC4]/10 hover:text-[#4ECDC4] rounded-md"

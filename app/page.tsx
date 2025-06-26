@@ -316,7 +316,163 @@ export default function Home() {
       {/* 5. Success Stories Section */}
       <SuccessStoriesSection />
 
-      {/* 6. Enhanced Final Call-to-Action Section */}
+      {/* 6. Pricing Section */}
+      <section id="pricing" className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
+        <div className="container px-4 md:px-6">
+          <div className="text-center max-w-4xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-[#4ECDC4]/10 rounded-full px-4 py-2 mb-6">
+              <DollarSign className="w-4 h-4 text-[#4ECDC4]" />
+              <span className="text-sm font-medium text-[#4ECDC4]">Pricing Plans</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-5xl font-bold text-[#2C3E50] mb-6">
+              Choose Your
+              <span className="block bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] bg-clip-text text-transparent">
+                Learning Path
+              </span>
+            </h2>
+            
+            <p className="text-xl text-[#2C3E50]/80 leading-relaxed">
+              Start free and upgrade when you're ready. All plans include our core features 
+              and access to our supportive community.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Free Plan */}
+            <div className="p-8 border border-[#E5E8E8] rounded-2xl hover:border-[#4ECDC4]/40 transition-all duration-300 hover:shadow-lg bg-white">
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-2 text-[#2C3E50]">Free Access</h3>
+                <div className="text-4xl font-bold text-[#4ECDC4] mb-4">$0</div>
+                <p className="text-[#2C3E50]/70 mb-6">Perfect for getting started</p>
+                <ul className="space-y-3 text-sm text-left mb-8">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Access to 3 introductory courses</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Basic community access</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Mobile learning app</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Progress tracking</span>
+                  </li>
+                </ul>
+                <Button className="w-full bg-[#4ECDC4] hover:bg-[#4ECDC4]/90 text-white" asChild>
+                  <Link href="/signup">Get Started Free</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Premium Plan */}
+            <div className="p-8 border-2 border-[#FF6B35] rounded-2xl hover:border-[#FF6B35]/80 transition-all duration-300 hover:shadow-xl bg-white relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] text-white px-4 py-2 rounded-full text-sm font-medium">
+                  Most Popular
+                </span>
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-2 text-[#2C3E50]">Premium</h3>
+                <div className="text-4xl font-bold text-[#FF6B35] mb-4">$29<span className="text-lg">/month</span></div>
+                <p className="text-[#2C3E50]/70 mb-6">For serious learners</p>
+                <ul className="space-y-3 text-sm text-left mb-8">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Access to all courses</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>1-on-1 mentorship sessions</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Project-based learning</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Certificate of completion</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Priority community support</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Offline content access</span>
+                  </li>
+                </ul>
+                <Button className="w-full bg-gradient-to-r from-[#FF6B35] to-[#4ECDC4] hover:from-[#FF6B35]/90 hover:to-[#4ECDC4]/90 text-white" asChild>
+                  <Link href="/signup?plan=premium">Start Premium</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="p-8 border border-[#E5E8E8] rounded-2xl hover:border-[#2C3E50]/40 transition-all duration-300 hover:shadow-lg bg-white">
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-2 text-[#2C3E50]">Enterprise</h3>
+                <div className="text-4xl font-bold text-[#2C3E50] mb-4">Custom</div>
+                <p className="text-[#2C3E50]/70 mb-6">For organizations</p>
+                <ul className="space-y-3 text-sm text-left mb-8">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Custom learning paths</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Team management tools</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Advanced analytics</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>Dedicated support</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>White-label options</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-[#1B4D3E]" />
+                    <span>API access</span>
+                  </li>
+                </ul>
+                <Button variant="outline" className="w-full border-[#2C3E50] text-[#2C3E50] hover:bg-[#2C3E50] hover:text-white" asChild>
+                  <Link href="/contact">Contact Sales</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Trust Elements */}
+          <div className="text-center mt-12">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-[#2C3E50]/60">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[#1B4D3E]" />
+                <span>30-day money-back guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 text-[#4ECDC4]" />
+                <span>Join 10,000+ entrepreneurs</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-[#FF6B35]" />
+                <span>Cancel anytime</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Enhanced Final Call-to-Action Section */}
       <section className="py-24 bg-gradient-to-br from-[#2C3E50] via-[#1B4D3E] to-[#2C3E50] relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-white/[0.02] -z-10" />
@@ -433,7 +589,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Enhanced Site Footer */}
+      {/* 8. Enhanced Site Footer */}
       <SiteFooter />
     </div>
   )

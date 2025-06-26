@@ -20,154 +20,70 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase/client';
 
 interface SuccessStory {
   id: string;
   name: string;
   location: string;
   country: string;
-  image: string;
-  businessName: string;
-  businessType: string;
-  courseTaken: string;
-  timeToLaunch: string;
-  monthlyRevenue: string;
-  employeesHired: number;
+  image_url: string;
+  business_name: string;
+  business_type: string;
+  course_taken: string;
+  time_to_launch: string;
+  monthly_revenue: string;
+  employees_hired: number;
   quote: string;
   achievement: string;
   rating: number;
-  videoUrl?: string;
-  linkedinUrl?: string;
-  businessUrl?: string;
-  beforeAfter: {
-    before: string;
-    after: string;
-  };
+  video_url?: string;
+  linkedin_url?: string;
+  business_url?: string;
+  before_story: string;
+  after_story: string;
+  is_featured: boolean;
+  display_order: number;
 }
-
-const successStories: SuccessStory[] = [
-  {
-    id: '1',
-    name: 'Sarah Mwangi',
-    location: 'Nairobi',
-    country: 'Kenya',
-    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    businessName: 'Digital Reach Africa',
-    businessType: 'Digital Marketing Agency',
-    courseTaken: 'Digital Marketing Mastery',
-    timeToLaunch: '3 months',
-    monthlyRevenue: '$4,200',
-    employeesHired: 5,
-    quote: "Tabor Academy didn't just teach me digital marketing - it gave me the confidence to build a business that serves clients across East Africa. The mentorship was invaluable.",
-    achievement: 'Scaled to 15+ clients in 6 months',
-    rating: 5,
-    videoUrl: '#',
-    linkedinUrl: '#',
-    businessUrl: '#',
-    beforeAfter: {
-      before: 'Unemployed graduate struggling to find work',
-      after: 'CEO of a thriving digital marketing agency'
-    }
-  },
-  {
-    id: '2',
-    name: 'John Okafor',
-    location: 'Lagos',
-    country: 'Nigeria',
-    image: 'https://images.unsplash.com/photo-1507152832244-10d45c7eda57?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    businessName: 'NoCode Solutions NG',
-    businessType: 'App Development',
-    courseTaken: 'No-Code Development',
-    timeToLaunch: '2 months',
-    monthlyRevenue: '$3,800',
-    employeesHired: 3,
-    quote: "The no-code course opened my eyes to possibilities I never knew existed. Now I'm building apps for local businesses and teaching others in my community.",
-    achievement: 'Built 12 apps for local businesses',
-    rating: 5,
-    videoUrl: '#',
-    linkedinUrl: '#',
-    businessUrl: '#',
-    beforeAfter: {
-      before: 'Taxi driver with a passion for technology',
-      after: 'Successful app developer and community educator'
-    }
-  },
-  {
-    id: '3',
-    name: 'Grace Mensah',
-    location: 'Accra',
-    country: 'Ghana',
-    image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    businessName: 'Afri-Style Boutique',
-    businessType: 'E-commerce Fashion',
-    courseTaken: 'E-commerce & Digital Marketing',
-    timeToLaunch: '4 months',
-    monthlyRevenue: '$2,900',
-    employeesHired: 4,
-    quote: "The mentorship program gave me the confidence to start my e-commerce business. My sales grow every month, and I'm now expanding to other West African countries.",
-    achievement: 'Expanded to 3 countries in first year',
-    rating: 5,
-    videoUrl: '#',
-    linkedinUrl: '#',
-    businessUrl: '#',
-    beforeAfter: {
-      before: 'Small market vendor with limited reach',
-      after: 'International e-commerce entrepreneur'
-    }
-  },
-  {
-    id: '4',
-    name: 'David Mukasa',
-    location: 'Kampala',
-    country: 'Uganda',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    businessName: 'AgriTech Solutions',
-    businessType: 'Agricultural Technology',
-    courseTaken: 'AI Tools & Automation',
-    timeToLaunch: '5 months',
-    monthlyRevenue: '$5,100',
-    employeesHired: 7,
-    quote: "Learning about AI tools transformed how I approach farming solutions. I now help farmers across Uganda optimize their yields using technology.",
-    achievement: 'Helped 200+ farmers increase yields by 40%',
-    rating: 5,
-    videoUrl: '#',
-    linkedinUrl: '#',
-    businessUrl: '#',
-    beforeAfter: {
-      before: 'Agricultural extension officer',
-      after: 'AgriTech entrepreneur serving hundreds of farmers'
-    }
-  },
-  {
-    id: '5',
-    name: 'Amina Hassan',
-    location: 'Dar es Salaam',
-    country: 'Tanzania',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    businessName: 'FinLit Academy',
-    businessType: 'Financial Education',
-    courseTaken: 'Financial Literacy & Entrepreneurship',
-    timeToLaunch: '3 months',
-    monthlyRevenue: '$3,200',
-    employeesHired: 6,
-    quote: "The financial literacy course didn't just teach me about money - it showed me how to build a sustainable business helping others achieve financial freedom.",
-    achievement: 'Trained 500+ people in financial literacy',
-    rating: 5,
-    videoUrl: '#',
-    linkedinUrl: '#',
-    businessUrl: '#',
-    beforeAfter: {
-      before: 'Bank teller with entrepreneurial dreams',
-      after: 'Financial education entrepreneur and community leader'
-    }
-  }
-];
 
 export function SuccessStoriesSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [visibleCards, setVisibleCards] = useState(3);
+  const [successStories, setSuccessStories] = useState<SuccessStory[]>([]);
+  const [loading, setLoading] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Fetch testimonials from Supabase
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('testimonials')
+          .select('*')
+          .eq('is_featured', true)
+          .order('display_order', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching testimonials:', error);
+          // Fallback to mock data if Supabase fails
+          setSuccessStories(mockSuccessStories);
+        } else if (data && data.length > 0) {
+          setSuccessStories(data);
+        } else {
+          // Use mock data if no testimonials in database
+          setSuccessStories(mockSuccessStories);
+        }
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+        setSuccessStories(mockSuccessStories);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   // Responsive card visibility
   useEffect(() => {
@@ -188,7 +104,7 @@ export function SuccessStoriesSection() {
 
   // Auto-play functionality
   useEffect(() => {
-    if (isAutoPlaying) {
+    if (isAutoPlaying && successStories.length > 0) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prev) => 
           prev + visibleCards >= successStories.length ? 0 : prev + 1
@@ -201,7 +117,7 @@ export function SuccessStoriesSection() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isAutoPlaying, visibleCards]);
+  }, [isAutoPlaying, visibleCards, successStories.length]);
 
   const nextSlide = () => {
     setIsAutoPlaying(false);
@@ -222,8 +138,28 @@ export function SuccessStoriesSection() {
     setCurrentIndex(index);
   };
 
+  if (loading) {
+    return (
+      <section className="py-20 bg-gradient-to-br from-white via-[#F7F9F9] to-[#4ECDC4]/5">
+        <div className="container px-4 md:px-6">
+          <div className="text-center">
+            <div className="animate-pulse">
+              <div className="h-8 bg-[#E5E8E8] rounded w-64 mx-auto mb-4"></div>
+              <div className="h-12 bg-[#E5E8E8] rounded w-96 mx-auto mb-8"></div>
+              <div className="grid md:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-96 bg-[#E5E8E8] rounded-lg"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="py-20 bg-gradient-to-br from-white via-[#F7F9F9] to-[#4ECDC4]/5 relative overflow-hidden">
+    <section id="success-stories" className="py-20 bg-gradient-to-br from-white via-[#F7F9F9] to-[#4ECDC4]/5 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-black/[0.02] -z-10" />
       
@@ -281,66 +217,68 @@ export function SuccessStoriesSection() {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative">
-          {/* Navigation Buttons */}
-          <div className="absolute top-1/2 -translate-y-1/2 -left-4 z-10">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={prevSlide}
-              className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4] hover:text-white shadow-lg"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-          </div>
-          
-          <div className="absolute top-1/2 -translate-y-1/2 -right-4 z-10">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={nextSlide}
-              className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4] hover:text-white shadow-lg"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
-          </div>
+        {successStories.length > 0 && (
+          <div className="relative">
+            {/* Navigation Buttons */}
+            <div className="absolute top-1/2 -translate-y-1/2 -left-4 z-10">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={prevSlide}
+                className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4] hover:text-white shadow-lg"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </Button>
+            </div>
+            
+            <div className="absolute top-1/2 -translate-y-1/2 -right-4 z-10">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={nextSlide}
+                className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4] hover:text-white shadow-lg"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </Button>
+            </div>
 
-          {/* Carousel Content */}
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ 
-                transform: `translateX(-${currentIndex * (100 / visibleCards)}%)`,
-                width: `${(successStories.length / visibleCards) * 100}%`
-              }}
-            >
-              {successStories.map((story, index) => (
-                <div 
-                  key={story.id}
-                  className="px-3"
-                  style={{ width: `${100 / successStories.length}%` }}
-                >
-                  <SuccessStoryCard story={story} />
-                </div>
+            {/* Carousel Content */}
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ 
+                  transform: `translateX(-${currentIndex * (100 / visibleCards)}%)`,
+                  width: `${(successStories.length / visibleCards) * 100}%`
+                }}
+              >
+                {successStories.map((story, index) => (
+                  <div 
+                    key={story.id}
+                    className="px-3"
+                    style={{ width: `${100 / successStories.length}%` }}
+                  >
+                    <SuccessStoryCard story={story} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              {Array.from({ length: Math.ceil(successStories.length / visibleCards) }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    Math.floor(currentIndex / visibleCards) === index
+                      ? 'bg-[#4ECDC4] scale-125'
+                      : 'bg-[#E5E8E8] hover:bg-[#4ECDC4]/50'
+                  }`}
+                />
               ))}
             </div>
           </div>
-
-          {/* Pagination Dots */}
-          <div className="flex justify-center gap-2 mt-8">
-            {Array.from({ length: Math.ceil(successStories.length / visibleCards) }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  Math.floor(currentIndex / visibleCards) === index
-                    ? 'bg-[#4ECDC4] scale-125'
-                    : 'bg-[#E5E8E8] hover:bg-[#4ECDC4]/50'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* Call to Action */}
         <div className="text-center mt-16">
@@ -391,7 +329,7 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
             {/* Header with Image and Basic Info */}
             <div className="relative h-48 bg-gradient-to-br from-[#4ECDC4]/20 to-[#FF6B35]/20">
               <Image
-                src={story.image}
+                src={story.image_url}
                 alt={story.name}
                 fill
                 className="object-cover"
@@ -399,7 +337,7 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               
               {/* Play Button Overlay */}
-              {story.videoUrl && (
+              {story.video_url && story.video_url !== '#' && (
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
                   <Button
                     size="icon"
@@ -437,7 +375,7 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
                 <h3 className="text-xl font-bold text-[#2C3E50] mb-1">{story.name}</h3>
                 <p className="text-sm text-[#2C3E50]/70 mb-2">{story.location}, {story.country}</p>
                 <Badge variant="outline" className="border-[#4ECDC4]/30 text-[#4ECDC4] text-xs">
-                  {story.businessType}
+                  {story.business_type}
                 </Badge>
               </div>
 
@@ -451,11 +389,11 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
               {/* Key Metrics */}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="text-center p-3 bg-[#4ECDC4]/5 rounded-lg">
-                  <div className="text-lg font-bold text-[#4ECDC4]">{story.monthlyRevenue}</div>
+                  <div className="text-lg font-bold text-[#4ECDC4]">{story.monthly_revenue}</div>
                   <div className="text-xs text-[#2C3E50]/60">Monthly Revenue</div>
                 </div>
                 <div className="text-center p-3 bg-[#FF6B35]/5 rounded-lg">
-                  <div className="text-lg font-bold text-[#FF6B35]">{story.timeToLaunch}</div>
+                  <div className="text-lg font-bold text-[#FF6B35]">{story.time_to_launch}</div>
                   <div className="text-xs text-[#2C3E50]/60">Time to Launch</div>
                 </div>
               </div>
@@ -479,7 +417,7 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-bold text-[#2C3E50]">{story.businessName}</h3>
+                <h3 className="text-lg font-bold text-[#2C3E50]">{story.business_name}</h3>
                 <p className="text-sm text-[#2C3E50]/70">{story.name}</p>
               </div>
               <Button
@@ -498,11 +436,11 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
               <div className="space-y-3">
                 <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-200">
                   <div className="text-xs font-medium text-red-600 mb-1">BEFORE</div>
-                  <div className="text-sm text-[#2C3E50]">{story.beforeAfter.before}</div>
+                  <div className="text-sm text-[#2C3E50]">{story.before_story}</div>
                 </div>
                 <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-200">
                   <div className="text-xs font-medium text-green-600 mb-1">AFTER</div>
-                  <div className="text-sm text-[#2C3E50]">{story.beforeAfter.after}</div>
+                  <div className="text-sm text-[#2C3E50]">{story.after_story}</div>
                 </div>
               </div>
             </div>
@@ -514,21 +452,21 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
                 <div className="flex items-center gap-2">
                   <DollarSign className="w-4 h-4 text-[#1B4D3E]" />
                   <div>
-                    <div className="text-sm font-medium text-[#2C3E50]">{story.monthlyRevenue}</div>
+                    <div className="text-sm font-medium text-[#2C3E50]">{story.monthly_revenue}</div>
                     <div className="text-xs text-[#2C3E50]/60">Monthly Revenue</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-[#4ECDC4]" />
                   <div>
-                    <div className="text-sm font-medium text-[#2C3E50]">{story.employeesHired}</div>
+                    <div className="text-sm font-medium text-[#2C3E50]">{story.employees_hired}</div>
                     <div className="text-xs text-[#2C3E50]/60">Employees Hired</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-[#FF6B35]" />
                   <div>
-                    <div className="text-sm font-medium text-[#2C3E50]">{story.timeToLaunch}</div>
+                    <div className="text-sm font-medium text-[#2C3E50]">{story.time_to_launch}</div>
                     <div className="text-xs text-[#2C3E50]/60">Time to Launch</div>
                   </div>
                 </div>
@@ -556,27 +494,27 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
             {/* Action Links */}
             <div className="mt-auto space-y-2">
               <div className="flex gap-2">
-                {story.businessUrl && (
+                {story.business_url && story.business_url !== '#' && (
                   <Button
                     variant="outline"
                     size="sm"
                     className="flex-1 border-[#4ECDC4]/30 text-[#4ECDC4] hover:bg-[#4ECDC4] hover:text-white"
                     asChild
                   >
-                    <Link href={story.businessUrl} target="_blank">
+                    <Link href={story.business_url} target="_blank">
                       <ExternalLink className="w-3 h-3 mr-1" />
                       Visit Business
                     </Link>
                   </Button>
                 )}
-                {story.videoUrl && (
+                {story.video_url && story.video_url !== '#' && (
                   <Button
                     variant="outline"
                     size="sm"
                     className="flex-1 border-[#FF6B35]/30 text-[#FF6B35] hover:bg-[#FF6B35] hover:text-white"
                     asChild
                   >
-                    <Link href={story.videoUrl} target="_blank">
+                    <Link href={story.video_url} target="_blank">
                       <Play className="w-3 h-3 mr-1" />
                       Watch Story
                     </Link>
@@ -584,7 +522,7 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
                 )}
               </div>
               <Badge variant="outline" className="w-full justify-center border-[#E5E8E8] text-[#2C3E50]/60">
-                Course: {story.courseTaken}
+                Course: {story.course_taken}
               </Badge>
             </div>
           </CardContent>
@@ -593,3 +531,76 @@ function SuccessStoryCard({ story }: { story: SuccessStory }) {
     </div>
   );
 }
+
+// Fallback mock data in case Supabase is not available
+const mockSuccessStories: SuccessStory[] = [
+  {
+    id: '1',
+    name: 'Sarah Mwangi',
+    location: 'Nairobi',
+    country: 'Kenya',
+    image_url: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    business_name: 'Digital Reach Africa',
+    business_type: 'Digital Marketing Agency',
+    course_taken: 'Digital Marketing Mastery',
+    time_to_launch: '3 months',
+    monthly_revenue: '$4,200',
+    employees_hired: 5,
+    quote: "Tabor Academy didn't just teach me digital marketing - it gave me the confidence to build a business that serves clients across East Africa. The mentorship was invaluable.",
+    achievement: 'Scaled to 15+ clients in 6 months',
+    rating: 5,
+    video_url: '#',
+    linkedin_url: '#',
+    business_url: '#',
+    before_story: 'Unemployed graduate struggling to find work',
+    after_story: 'CEO of a thriving digital marketing agency',
+    is_featured: true,
+    display_order: 1
+  },
+  {
+    id: '2',
+    name: 'John Okafor',
+    location: 'Lagos',
+    country: 'Nigeria',
+    image_url: 'https://images.unsplash.com/photo-1507152832244-10d45c7eda57?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    business_name: 'NoCode Solutions NG',
+    business_type: 'App Development',
+    course_taken: 'No-Code Development',
+    time_to_launch: '2 months',
+    monthly_revenue: '$3,800',
+    employees_hired: 3,
+    quote: "The no-code course opened my eyes to possibilities I never knew existed. Now I'm building apps for local businesses and teaching others in my community.",
+    achievement: 'Built 12 apps for local businesses',
+    rating: 5,
+    video_url: '#',
+    linkedin_url: '#',
+    business_url: '#',
+    before_story: 'Taxi driver with a passion for technology',
+    after_story: 'Successful app developer and community educator',
+    is_featured: true,
+    display_order: 2
+  },
+  {
+    id: '3',
+    name: 'Grace Mensah',
+    location: 'Accra',
+    country: 'Ghana',
+    image_url: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    business_name: 'Afri-Style Boutique',
+    business_type: 'E-commerce Fashion',
+    course_taken: 'E-commerce & Digital Marketing',
+    time_to_launch: '4 months',
+    monthly_revenue: '$2,900',
+    employees_hired: 4,
+    quote: "The mentorship program gave me the confidence to start my e-commerce business. My sales grow every month, and I'm now expanding to other West African countries.",
+    achievement: 'Expanded to 3 countries in first year',
+    rating: 5,
+    video_url: '#',
+    linkedin_url: '#',
+    business_url: '#',
+    before_story: 'Small market vendor with limited reach',
+    after_story: 'International e-commerce entrepreneur',
+    is_featured: true,
+    display_order: 3
+  }
+];
