@@ -57,12 +57,20 @@ interface CourseDetails {
   is_published: boolean;
   created_at: string;
   updated_at: string;
+  course_type?: 'self_paced' | 'cohort_based';
   modules: Module[];
 }
 
 interface CourseContentPageClientProps {
   course: CourseDetails;
 }
+
+type EditorItem = 
+  | { type: 'lesson'; data: Lesson; moduleId: string }
+  | { type: 'module'; data: Module }
+  | { type: 'new_lesson'; moduleId: string }
+  | { type: 'new_module' }
+  | null;
 
 function LessonContentViewer({ content }: { content: any }) {
   const editor = useEditor({
@@ -76,6 +84,188 @@ function LessonContentViewer({ content }: { content: any }) {
   return (
     <div className="prose max-w-none">
       <EditorContent editor={editor} />
+    </div>
+  );
+}
+
+function ModuleEditor({ module, onSave, onCancel }: { 
+  module?: Module; 
+  onSave: (data: any) => void; 
+  onCancel: () => void; 
+}) {
+  const [title, setTitle] = useState(module?.title || '');
+  const [description, setDescription] = useState(module?.description || '');
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h3 className="font-semibold text-[#2C3E50] mb-4">
+          {module ? 'Edit Module' : 'Create New Module'}
+        </h3>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-[#2C3E50] mb-2">
+          Module Title
+        </label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full p-3 border border-[#E5E8E8] rounded-lg focus:border-[#4ECDC4] focus:outline-none"
+          placeholder="Enter module title..."
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-[#2C3E50] mb-2">
+          Description (Optional)
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={3}
+          className="w-full p-3 border border-[#E5E8E8] rounded-lg focus:border-[#4ECDC4] focus:outline-none"
+          placeholder="Brief description of this module..."
+        />
+      </div>
+
+      <div className="flex gap-2 pt-4">
+        <Button 
+          onClick={() => onSave({ title, description })}
+          className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white flex-1"
+          disabled={!title.trim()}
+        >
+          {module ? 'Update Module' : 'Create Module'}
+        </Button>
+        <Button 
+          variant="outline" 
+          onClick={onCancel}
+          className="border-[#E5E8E8] hover:border-[#4ECDC4]"
+        >
+          Cancel
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function LessonEditor({ lesson, moduleId, courseType, onSave, onCancel }: { 
+  lesson?: Lesson; 
+  moduleId: string;
+  courseType?: string;
+  onSave: (data: any) => void; 
+  onCancel: () => void; 
+}) {
+  const [title, setTitle] = useState(lesson?.title || '');
+  const [videoUrl, setVideoUrl] = useState(lesson?.video_url || '');
+  const [duration, setDuration] = useState(lesson?.duration?.toString() || '');
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: lesson?.content || '',
+  });
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h3 className="font-semibold text-[#2C3E50] mb-4">
+          {lesson ? 'Edit Lesson' : 'Create New Lesson'}
+        </h3>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-[#2C3E50] mb-2">
+          Lesson Title
+        </label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full p-3 border border-[#E5E8E8] rounded-lg focus:border-[#4ECDC4] focus:outline-none"
+          placeholder="Enter lesson title..."
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-[#2C3E50] mb-2">
+          Video URL (Optional)
+        </label>
+        <input
+          type="url"
+          value={videoUrl}
+          onChange={(e) => setVideoUrl(e.target.value)}
+          className="w-full p-3 border border-[#E5E8E8] rounded-lg focus:border-[#4ECDC4] focus:outline-none"
+          placeholder="https://..."
+        />
+      </div>
+
+      {videoUrl && (
+        <div>
+          <label className="block text-sm font-medium text-[#2C3E50] mb-2">
+            Duration (seconds)
+          </label>
+          <input
+            type="number"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            className="w-full p-3 border border-[#E5E8E8] rounded-lg focus:border-[#4ECDC4] focus:outline-none"
+            placeholder="300"
+          />
+        </div>
+      )}
+
+      {courseType === 'cohort_based' && (
+        <div className="p-4 bg-[#4ECDC4]/5 rounded-lg border border-[#4ECDC4]/20">
+          <h4 className="font-medium text-[#2C3E50] mb-2">Cohort Features</h4>
+          <div className="space-y-2">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="rounded border-[#E5E8E8]" />
+              <span className="text-sm text-[#2C3E50]">Live session required</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="rounded border-[#E5E8E8]" />
+              <span className="text-sm text-[#2C3E50]">Assignment submission</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="rounded border-[#E5E8E8]" />
+              <span className="text-sm text-[#2C3E50]">Peer review required</span>
+            </label>
+          </div>
+        </div>
+      )}
+
+      <div>
+        <label className="block text-sm font-medium text-[#2C3E50] mb-2">
+          Lesson Content
+        </label>
+        <div className="border border-[#E5E8E8] rounded-lg min-h-[200px] p-3">
+          <EditorContent editor={editor} />
+        </div>
+      </div>
+
+      <div className="flex gap-2 pt-4">
+        <Button 
+          onClick={() => onSave({ 
+            title, 
+            video_url: videoUrl || null, 
+            duration: duration ? parseInt(duration) : null,
+            content: editor?.getHTML() || null,
+            module_id: moduleId
+          })}
+          className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white flex-1"
+          disabled={!title.trim()}
+        >
+          {lesson ? 'Update Lesson' : 'Create Lesson'}
+        </Button>
+        <Button 
+          variant="outline" 
+          onClick={onCancel}
+          className="border-[#E5E8E8] hover:border-[#4ECDC4]"
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }
@@ -105,7 +295,7 @@ function formatDuration(duration?: number): string {
 }
 
 export default function CourseContentPageClient({ course }: CourseContentPageClientProps) {
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [activeEditorItem, setActiveEditorItem] = useState<EditorItem>(null);
   const [openModules, setOpenModules] = useState<Set<string>>(new Set());
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
 
@@ -157,6 +347,18 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
     return { totalLessons, publishedLessons, totalVideos, totalDuration };
   };
 
+  const handleSaveModule = async (data: any) => {
+    // TODO: Implement API call to save module
+    console.log('Saving module:', data);
+    setActiveEditorItem(null);
+  };
+
+  const handleSaveLesson = async (data: any) => {
+    // TODO: Implement API call to save lesson
+    console.log('Saving lesson:', data);
+    setActiveEditorItem(null);
+  };
+
   const stats = getTotalStats();
 
   return (
@@ -183,7 +385,17 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
               <div>
                 <h1 className="text-3xl font-bold text-[#2C3E50] mb-2">Course Content</h1>
                 <h2 className="text-xl text-[#2C3E50]/80 mb-2">{course.title}</h2>
-                <p className="text-[#2C3E50]/60">{course.description}</p>
+                <div className="flex items-center gap-3">
+                  <p className="text-[#2C3E50]/60">{course.description}</p>
+                  {course.course_type && (
+                    <Badge 
+                      variant="outline" 
+                      className={course.course_type === 'cohort_based' ? 'border-[#4ECDC4] text-[#4ECDC4]' : 'border-[#FF6B35] text-[#FF6B35]'}
+                    >
+                      {course.course_type === 'cohort_based' ? 'Cohort-Based' : 'Self-Paced'}
+                    </Badge>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <Link href={`/dashboard/instructor/courses/${course.id}/preview`}>
@@ -192,7 +404,10 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                     Preview Course
                   </Button>
                 </Link>
-                <Button className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white">
+                <Button 
+                  onClick={() => setActiveEditorItem({ type: 'new_module' })}
+                  className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white"
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Module
                 </Button>
@@ -266,7 +481,12 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                 <CardHeader>
                   <CardTitle className="text-[#2C3E50] flex items-center justify-between">
                     <span>Course Curriculum</span>
-                    <Button size="sm" className="bg-[#4ECDC4] hover:bg-[#4ECDC4]/90 text-white">
+                    <Button 
+                      size="sm" 
+                      onClick={() => setActiveEditorItem({ type: 'new_lesson', moduleId: course.modules[0]?.id || '' })}
+                      className="bg-[#4ECDC4] hover:bg-[#4ECDC4]/90 text-white"
+                      disabled={course.modules.length === 0}
+                    >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Lesson
                     </Button>
@@ -280,7 +500,10 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                       <p className="text-[#2C3E50]/60 mb-4">
                         Start building your course by adding modules and lessons.
                       </p>
-                      <Button className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white">
+                      <Button 
+                        onClick={() => setActiveEditorItem({ type: 'new_module' })}
+                        className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white"
+                      >
                         <Plus className="w-4 h-4 mr-2" />
                         Create First Module
                       </Button>
@@ -322,7 +545,15 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                   >
                                     {module.is_published ? "Published" : "Draft"}
                                   </Badge>
-                                  <Button size="sm" variant="ghost" className="text-[#4ECDC4]">
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost" 
+                                    className="text-[#4ECDC4]"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveEditorItem({ type: 'module', data: module });
+                                    }}
+                                  >
                                     <Edit className="w-4 h-4" />
                                   </Button>
                                 </div>
@@ -331,6 +562,17 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
 
                             <Collapsible.Content>
                               <div className="p-4 space-y-4">
+                                {/* Add Lesson Button */}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setActiveEditorItem({ type: 'new_lesson', moduleId: module.id })}
+                                  className="w-full border-dashed border-[#4ECDC4] text-[#4ECDC4] hover:bg-[#4ECDC4]/5"
+                                >
+                                  <Plus className="w-4 h-4 mr-2" />
+                                  Add Lesson to {module.title}
+                                </Button>
+
                                 {/* Video Lessons */}
                                 {categories.videos.length > 0 && (
                                   <Collapsible.Root
@@ -357,11 +599,11 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                           <div
                                             key={lesson.id}
                                             className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
-                                              selectedLesson?.id === lesson.id
+                                              activeEditorItem?.type === 'lesson' && activeEditorItem.data.id === lesson.id
                                                 ? 'border-[#FF6B35] bg-[#FF6B35]/5'
                                                 : 'border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4]/5'
                                             }`}
-                                            onClick={() => setSelectedLesson(lesson)}
+                                            onClick={() => setActiveEditorItem({ type: 'lesson', data: lesson, moduleId: module.id })}
                                           >
                                             <div className="flex items-center gap-3">
                                               {getLessonIcon('video')}
@@ -383,7 +625,15 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                               ) : (
                                                 <Lock className="w-4 h-4 text-gray-400" />
                                               )}
-                                              <Button size="sm" variant="ghost" className="text-[#4ECDC4]">
+                                              <Button 
+                                                size="sm" 
+                                                variant="ghost" 
+                                                className="text-[#4ECDC4]"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setActiveEditorItem({ type: 'lesson', data: lesson, moduleId: module.id });
+                                                }}
+                                              >
                                                 <Edit className="w-3 h-3" />
                                               </Button>
                                             </div>
@@ -420,11 +670,11 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                           <div
                                             key={lesson.id}
                                             className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
-                                              selectedLesson?.id === lesson.id
+                                              activeEditorItem?.type === 'lesson' && activeEditorItem.data.id === lesson.id
                                                 ? 'border-[#4ECDC4] bg-[#4ECDC4]/5'
                                                 : 'border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4]/5'
                                             }`}
-                                            onClick={() => setSelectedLesson(lesson)}
+                                            onClick={() => setActiveEditorItem({ type: 'lesson', data: lesson, moduleId: module.id })}
                                           >
                                             <div className="flex items-center gap-3">
                                               {getLessonIcon('todo')}
@@ -438,7 +688,15 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                               ) : (
                                                 <Lock className="w-4 h-4 text-gray-400" />
                                               )}
-                                              <Button size="sm" variant="ghost" className="text-[#4ECDC4]">
+                                              <Button 
+                                                size="sm" 
+                                                variant="ghost" 
+                                                className="text-[#4ECDC4]"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setActiveEditorItem({ type: 'lesson', data: lesson, moduleId: module.id });
+                                                }}
+                                              >
                                                 <Edit className="w-3 h-3" />
                                               </Button>
                                             </div>
@@ -475,11 +733,11 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                           <div
                                             key={lesson.id}
                                             className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
-                                              selectedLesson?.id === lesson.id
+                                              activeEditorItem?.type === 'lesson' && activeEditorItem.data.id === lesson.id
                                                 ? 'border-[#2C3E50] bg-gray-50'
                                                 : 'border-[#E5E8E8] hover:border-[#4ECDC4] hover:bg-[#4ECDC4]/5'
                                             }`}
-                                            onClick={() => setSelectedLesson(lesson)}
+                                            onClick={() => setActiveEditorItem({ type: 'lesson', data: lesson, moduleId: module.id })}
                                           >
                                             <div className="flex items-center gap-3">
                                               {getLessonIcon('document')}
@@ -493,7 +751,15 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
                                               ) : (
                                                 <Lock className="w-4 h-4 text-gray-400" />
                                               )}
-                                              <Button size="sm" variant="ghost" className="text-[#4ECDC4]">
+                                              <Button 
+                                                size="sm" 
+                                                variant="ghost" 
+                                                className="text-[#4ECDC4]"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setActiveEditorItem({ type: 'lesson', data: lesson, moduleId: module.id });
+                                                }}
+                                              >
                                                 <Edit className="w-3 h-3" />
                                               </Button>
                                             </div>
@@ -514,65 +780,79 @@ export default function CourseContentPageClient({ course }: CourseContentPageCli
               </Card>
             </div>
 
-            {/* Lesson Content Preview */}
+            {/* Dynamic Editor/Preview Panel */}
             <div className="lg:col-span-1">
               <Card className="border-[#E5E8E8] sticky top-6">
                 <CardHeader>
                   <CardTitle className="text-[#2C3E50]">
-                    {selectedLesson ? 'Lesson Preview' : 'Content Preview'}
+                    {activeEditorItem?.type === 'lesson' && 'Edit Lesson'}
+                    {activeEditorItem?.type === 'module' && 'Edit Module'}
+                    {activeEditorItem?.type === 'new_lesson' && 'Create Lesson'}
+                    {activeEditorItem?.type === 'new_module' && 'Create Module'}
+                    {!activeEditorItem && 'Content Editor'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {selectedLesson ? (
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="font-semibold text-[#2C3E50] mb-2">{selectedLesson.title}</h3>
-                        <div className="flex items-center gap-2 mb-4">
-                          {getLessonIcon(getLessonType(selectedLesson))}
-                          <Badge
-                            variant={selectedLesson.is_published ? "default" : "secondary"}
-                            className={selectedLesson.is_published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}
-                          >
-                            {selectedLesson.is_published ? "Published" : "Draft"}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      {selectedLesson.video_url && (
-                        <div className="aspect-video bg-black rounded-lg overflow-hidden mb-4">
-                          <video
-                            src={selectedLesson.video_url}
-                            controls
-                            className="w-full h-full object-cover"
-                          >
-                            Your browser does not support the video tag.
-                          </video>
-                        </div>
-                      )}
-
-                      {selectedLesson.content && (
-                        <div className="max-h-64 overflow-y-auto">
-                          <LessonContentViewer content={selectedLesson.content} />
-                        </div>
-                      )}
-
-                      <div className="flex gap-2">
-                        <Button size="sm" className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white flex-1">
-                          <Edit className="w-3 h-3 mr-2" />
-                          Edit
-                        </Button>
-                        <Button size="sm" variant="outline" className="border-[#E5E8E8] hover:border-[#4ECDC4]">
-                          <Settings className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
+                  {activeEditorItem?.type === 'lesson' && (
+                    <LessonEditor
+                      lesson={activeEditorItem.data}
+                      moduleId={activeEditorItem.moduleId}
+                      courseType={course.course_type}
+                      onSave={handleSaveLesson}
+                      onCancel={() => setActiveEditorItem(null)}
+                    />
+                  )}
+                  
+                  {activeEditorItem?.type === 'module' && (
+                    <ModuleEditor
+                      module={activeEditorItem.data}
+                      onSave={handleSaveModule}
+                      onCancel={() => setActiveEditorItem(null)}
+                    />
+                  )}
+                  
+                  {activeEditorItem?.type === 'new_lesson' && (
+                    <LessonEditor
+                      moduleId={activeEditorItem.moduleId}
+                      courseType={course.course_type}
+                      onSave={handleSaveLesson}
+                      onCancel={() => setActiveEditorItem(null)}
+                    />
+                  )}
+                  
+                  {activeEditorItem?.type === 'new_module' && (
+                    <ModuleEditor
+                      onSave={handleSaveModule}
+                      onCancel={() => setActiveEditorItem(null)}
+                    />
+                  )}
+                  
+                  {!activeEditorItem && (
                     <div className="text-center py-8">
                       <FileText className="w-12 h-12 text-[#4ECDC4] mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-[#2C3E50] mb-2">Select a Lesson</h3>
-                      <p className="text-[#2C3E50]/60">
-                        Choose a lesson from the curriculum to preview its content and make edits.
+                      <h3 className="text-lg font-semibold text-[#2C3E50] mb-2">Ready to Edit</h3>
+                      <p className="text-[#2C3E50]/60 mb-4">
+                        Select a module or lesson to edit, or create new content using the buttons above.
                       </p>
+                      <div className="space-y-2">
+                        <Button 
+                          onClick={() => setActiveEditorItem({ type: 'new_module' })}
+                          className="w-full bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Create Module
+                        </Button>
+                        {course.modules.length > 0 && (
+                          <Button 
+                            onClick={() => setActiveEditorItem({ type: 'new_lesson', moduleId: course.modules[0].id })}
+                            variant="outline"
+                            className="w-full border-[#4ECDC4] text-[#4ECDC4] hover:bg-[#4ECDC4]/5"
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Create Lesson
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </CardContent>
